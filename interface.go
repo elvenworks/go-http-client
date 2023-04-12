@@ -1,4 +1,4 @@
-package go_http_client
+package http_client
 
 import "context"
 
