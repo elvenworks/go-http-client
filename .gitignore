@@ -1,4 +1,2 @@
-/coverage/*
-!/coverage/.gitkeep
 cover.out
-.vscode
+cover.html

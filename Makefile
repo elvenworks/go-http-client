@@ -10,4 +10,4 @@ sec: # Run security tests
 
 test: # Run all unit tests
 	@go test ./... -timeout 5s -cover -coverprofile=cover.out
-	@go tool cover -html=cover.out -o coverage/index.html
+	@go tool cover -html=cover.out -o cover.html
