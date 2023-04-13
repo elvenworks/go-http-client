@@ -1,5 +1,5 @@
 
-The http_client package provides to make HTTP requests.
+Package go-http-client implements the possibility to provides to make HTTP requests in a better way, making it possible to use mocks and interfaces.
 
 ## Installation
 Use go get.
