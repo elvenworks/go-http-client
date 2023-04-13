@@ -25,11 +25,11 @@ import (
 )
 
 func  main() {
-	client := httpClient.Init("https://643817f6c1565cdd4d65fff3.mockapi.io")
+	client := httpClient.Init("https://myapp.com")
 	options := &httpClient.Options{
 		Path: "/api/v1/users",
 		Method: http.MethodPost,
-		Body: []byte(``),
+		Body: []byte(`{"user": "Loren Ipsun"}`),
 		Headers: map[string]string{
 			"Content-Type": "application/json",
 		},
@@ -40,6 +40,8 @@ func  main() {
 		log.Fatal(err)
 	}
 
+	// {"id": 1, "user": "Loren Ipsun"}
+	// 201 created
 	fmt.Println(string(response.Body), response.StatusCode)
 }
 ```
