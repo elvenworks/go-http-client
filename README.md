@@ -1,13 +1,14 @@
-Package go_unleash implements the possibility to connect your app to unleash in a better way, making it possible to use mocks and interfaces.
+
+The http_client package provides to make HTTP requests.
 
 ## Installation
 Use go get.
 ```
-go get github.com/hugokishi/go_unleash
+go get github.com/elvenworks/go-http-client
 ```
 Then import the validator package into your own code.
 ```
-import "github.com/hugokishi/go_unleash"
+import "github.com/elvenworks/go-http-client"
 ```
 
 ## Usage
@@ -16,31 +17,44 @@ Sample code:
 package main
 
 import (
-	go_unleash "github.com/hugokishi/go_unleash"
-	"github.com/hugokishi/go_unleash/internal/domain/structs"
+	"context"
+	"fmt"
+	"log"
+	"net/http"
+	httpClient "github.com/elvenworks/go-http-client"
 )
 
 func  main() {
-	unClient := go_unleash.InitUnleash(
-		structs.UnleashConfig{
-			AppEnvironment: "YOUR_APP_ENVIRONMENT",
-			AppName: "YOUR_APP_NAME",
-			UnleashURL: "YOUR_UNLEASH_URL",
-			UnleashAuthorizationToken: "YOUR_AUTHORIZATION_TOKEN",
-			LoggingLevel: "YOUR_LOGGING_LEVEL",
+	client := httpClient.Init("https://643817f6c1565cdd4d65fff3.mockapi.io")
+	options := &httpClient.Options{
+		Path: "/api/v1/users",
+		Method: http.MethodPost,
+		Body: []byte(``),
+		Headers: map[string]string{
+			"Content-Type": "application/json",
 		},
-	)
+	}
 	
-	isEnabled := unClient.IsEnabled("MY_FLAG")
+	response, err := client.Request(context.Background(), options)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(string(response.Body), response.StatusCode)
 }
 ```
 
-## Parameters:
+## Options:
 | Parameter | Description | Value |
 | :-------------: |:--------:| :-------------: |
-| AppEnvironment | Refers to the environment that unleash is being configured for  | local, development, staging, production
-| AppName | Refers to the name that will be registered in unleash | Defined by User |
-| UnleashURL | Refers to the url of connection with unleash | Defined by User |
-| UnleashAuthorizationToken | Refers to the authorization token for connecting to unleash | Defined by User |
-| LoggingLevel | Refers to the logging level used in library | warn, info, debug, error (default info) |
- 
+| Method | The HTTP method to be used in the request | A string that can be GET, POST, PUT, PATCH, DELETE, etc. |
+| Path | The API endpoint path for the request | A string that contains the endpoint path, for example, /users/123. |
+| Body | The data in the request body | It should be a JSON object that contains the data to be sent in the request body. The JSON object can contain any type of data, such as strings, numbers, arrays, or other JSON objects. |
+| Headers | The additional HTTP headers for the request | A string-key and value map, where each key is the header name and each value is the header value. For example, {"Authorization": "Bearer xyz123"}. |
+
+## Response:
+
+| Parameter | Description | Value |
+| :-------------: |:--------:| :-------------: |
+| Body | The response body data | A byte array that contains the response body data. |
+| StatusCode | The HTTP status code of the response | An integer that represents the HTTP status code returned by the server. For example, 200 for a successful request or 404 for a resource not found. |

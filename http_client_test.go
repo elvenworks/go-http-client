@@ -21,10 +21,6 @@ func TestShouldSuccessResponse(t *testing.T) {
 	}
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		for key, value := range options.Headers {
-			w.Header().Set(key, value)
-		}
-
 		w.WriteHeader(want.StatusCode)
 
 		w.Write(want.Body)

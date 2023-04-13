@@ -18,7 +18,6 @@ type Options struct {
 	Path    string
 	Body    interface{}
 	Headers map[string]string
-	Timeout time.Duration
 }
 
 type Response struct {
@@ -53,7 +52,7 @@ func (h *HttpClient) Request(ctx context.Context, options *Options) (*Response, 
 		req.Header.Set(key, value)
 	}
 
-	client := &http.Client{Timeout: h.getTimeOut(options)}
+	client := &http.Client{Timeout: 10 * time.Second}
 	apmClient := apmhttp.WrapClient(client)
 	response, err := apmClient.Do(req)
 	if err != nil {
@@ -86,16 +85,6 @@ func (h *HttpClient) getBody(options *Options) (io.Reader, error) {
 	}
 
 	return body, nil
-}
-
-func (h *HttpClient) getTimeOut(options *Options) time.Duration {
-	timeout := 10 * time.Second
-
-	if options.Timeout > 0 {
-		timeout = options.Timeout
-	}
-
-	return timeout
 }
 
 func (h *HttpClient) getUrl(options *Options) string {
